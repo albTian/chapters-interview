@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { API_URL } from '../constants';
-import { ChapterJob } from '../types';
+import { ChapterCandidate, ChapterJob } from '../types';
 
 
 
@@ -13,5 +13,19 @@ export const useJobs = () => {
     jobs: data,
     isLoading,
     isError: error,
+  };
+};
+
+export const useCandidatesForJob = (jobId: string) => {
+  const { data, error, isValidating, isLoading } = useSWR<ChapterCandidate[]>(
+    `${API_URL}/takehome/get_candidates_for_job/${jobId}`,
+    fetcher
+  );
+
+  return {
+    candidates: data,
+    isLoading,
+    isError: error,
+    isUpdating: isValidating,
   };
 };
