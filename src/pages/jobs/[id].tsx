@@ -41,7 +41,7 @@ const JobCandidatesPage: React.FC = () => {
   return (
     <JobsLayout>
       <Flex direction="column" width="100%" marginRight={"10vw"} p="4">
-        <Heading fontSize="2vw">Candidates</Heading>
+        <Heading fontSize="24">Candidates</Heading>
         <JobsCandidatesContent />
       </Flex>
     </JobsLayout>

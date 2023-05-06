@@ -53,7 +53,7 @@ const JobsList: React.FC = () => {
   const MIN_WIDTH = 0.2; // minimum width in percentage of screen width
   const MAX_WIDTH = 0.5; // maximum width in percentage of screen width
 
-  const [sidebarWidth, setSidebarWidth] = useState(0.4);
+  const [sidebarWidth, setSidebarWidth] = useState(0.2);
   const [resizing, setResizing] = useState(false);
 
   // Parse the job ID from the route parameters
@@ -108,7 +108,7 @@ const JobsList: React.FC = () => {
         p={4}
         width={`${sidebarWidth * 100}vw`}
       >
-        <Heading fontSize="2vw">Jobs</Heading>
+        <Heading fontSize="24">Jobs</Heading>
         {jobs.map((job) => (
           <JobButton
             key={job.id}

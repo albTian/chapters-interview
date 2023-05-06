@@ -36,7 +36,7 @@ export const useContactCandidate = (linkedin_id: string) => {
   let referrers: CandidateReferrer[] = []
   let reachable = true
   if (data && data.status === "referrable" && "referrers" in data) {
-    referrers = data.referrers
+    referrers = data.referrers.sort((a, b) => b.closeness_score - a.closeness_score)
     reachable = false
   }
 

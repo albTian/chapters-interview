@@ -1,4 +1,4 @@
-import { Box, Avatar, Text, BoxProps, Button } from "@chakra-ui/react";
+import { Box, Avatar, Text, BoxProps, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { ChapterCandidate } from "../types";
 import { CandidateInfo } from "./CandidateInfo";
@@ -24,11 +24,8 @@ const CandidateItem = ({ candidate, ...props }: CandidateItemProps) => {
     setIsExpanded(!isExpanded);
   };
 
-  
   return (
-    <Box
-      {...props}
-    >
+    <Box {...props}>
       <Button w="100%" p="8" variant="ghost" onClick={handleExpandClick}>
         <Avatar src={candidate.profile_image} />
         <Box ml="4" textAlign={"left"}>
@@ -41,9 +38,16 @@ const CandidateItem = ({ candidate, ...props }: CandidateItemProps) => {
           </Text>
         </Box>
       </Button>
-        {isExpanded && (
-          <CandidateInfo linkedinId={candidate.id} />
-        )}
+      <Modal isOpen={isExpanded} onClose={handleExpandClick} size="3xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{candidate.name}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <CandidateInfo linkedinId={candidate.id} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
