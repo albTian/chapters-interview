@@ -4,7 +4,8 @@ import {
   Center,
   Flex,
   Heading, Spinner,
-  Text
+  Text,
+  useColorMode
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -19,18 +20,20 @@ interface JobButtonProps {
 }
 
 const JobButton: React.FC<JobButtonProps> = ({ job, selected, onClick }) => {
+  const { colorMode } = useColorMode()
+  const textColor = !selected ? ""  : (colorMode === "dark" ? "green.300" : "green")
   return (
     <Button
       justifyContent="flex-start"
       variant={selected ? "solid" : "ghost"}
       colorScheme={selected ? "gray" : undefined}
       onClick={onClick}
-      color={selected ? "#056ae6" : ""}
     >
       <Text
         whiteSpace="nowrap" // Prevent the job name from wrapping to a new line
         overflow="hidden" // Hide any overflow that extends beyond the button width
         textOverflow="ellipsis" // Add an ellipsis to indicate that the text has been truncated
+        color={textColor}
       >
         {job.position}
       </Text>
