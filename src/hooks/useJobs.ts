@@ -4,6 +4,7 @@ import { ChapterCandidate, ChapterJob } from "../types";
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
+// push to vercel
 export const useJobs = () => {
   const { data, error, isLoading } = useSWR<ChapterJob[]>(
     `${API_URL}/takehome/get_jobs`,
