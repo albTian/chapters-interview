@@ -6,7 +6,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 // push to vercel
 export const useJobs = () => {
-  const { data, error, isLoading } = useSWR<ChapterJob[]>(
+  const { data, error, isLoading, mutate } = useSWR<ChapterJob[]>(
     `${API_URL}/takehome/get_jobs`,
     fetcher
   );
@@ -15,6 +15,7 @@ export const useJobs = () => {
     jobs: data,
     isLoading,
     isError: error,
+    mutate
   };
 };
 
@@ -35,7 +36,7 @@ type UseCandidatesForJobResponse = {
 
 // Backend already sorts based on fit_score
 export const useCandidatesForJob = (jobId: string) => {
-  const { data, error, isValidating, isLoading } = useSWR<UseCandidatesForJobResponse[]>(
+  const { data, error, isValidating, isLoading, mutate } = useSWR<UseCandidatesForJobResponse[]>(
     `${API_URL}/takehome/get_candidates_for_job/${jobId}`,
     fetcher
   );
@@ -61,5 +62,6 @@ export const useCandidatesForJob = (jobId: string) => {
     isLoading,
     isError: error,
     isUpdating: isValidating,
+    mutate
   };
 };
