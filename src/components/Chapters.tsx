@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { IntroducerList, Introducer } from "./IntroducerList";
+import { API_URL } from "../constants";
 
 const DUMMY_RESPONSE: Introducer[] = [
   {
@@ -79,17 +80,18 @@ export const Chapters = () => {
 
   const handleButtonClick = async () => {
     if (isValidURL && linkedInId) {
-      const url = `https://chapters-interview.up.railway.app/get_introducers/${linkedInId}`;
+      const url = `${API_URL}/get_introducers/${linkedInId}`;
 
       try {
         console.log(`getting from ${url}`);
-        // const response = await axios.get(url);
+        const response = await axios.get(url);
         // Handle response from the server
 
-        const response = DUMMY_RESPONSE;
+        // const response = DUMMY_RESPONSE;
+        console.log("RESPONSE");
         console.log(response);
 
-        setIntroducers(response);
+        setIntroducers(response.data);
       } catch (error) {
         console.error(error);
       }
