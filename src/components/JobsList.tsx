@@ -27,8 +27,9 @@ const JobButton: React.FC<JobButtonProps> = ({ job, selected, onClick }) => {
     <Button
       justifyContent="flex-start"
       variant={selected ? "solid" : "ghost"}
-      colorScheme={selected ? "blue" : undefined}
+      colorScheme={selected ? "gray" : undefined}
       onClick={onClick}
+      color={selected ? "#056ae6" : ""}
     >
       {job.position}
     </Button>
