@@ -3,21 +3,14 @@ import {
   Button,
   Center,
   Flex,
-  Heading,
-  HStack,
-  List,
-  ListItem,
-  Spinner,
-  Text,
-  VStack,
+  Heading, Spinner,
+  Text
 } from "@chakra-ui/react";
-import { useJobs } from "../hooks/useJobs";
-import Link from "next/link";
-import { ChapterJob } from "../types";
-import { useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { useJobs } from "../hooks/useJobs";
+import { ChapterJob } from "../types";
 import AddJobButton from "./AddJobButton";
-import { mutate } from "swr";
 
 interface JobButtonProps {
   job: ChapterJob;

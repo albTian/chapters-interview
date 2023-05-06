@@ -44,7 +44,7 @@ const CandidateItem = ({ candidate, ...props }: CandidateItemProps) => {
           <ModalHeader>{candidate.name}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CandidateInfo linkedinId={candidate.id} />
+            <CandidateInfo candidate={candidate} />
           </ModalBody>
         </ModalContent>
       </Modal>

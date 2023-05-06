@@ -1,8 +1,5 @@
 
-import { Flex, HStack } from "@chakra-ui/react";
-import { Container } from "../../components/Container";
-import { DarkModeSwitch } from "../../components/DarkModeSwitch";
-import { Hero } from "../../components/Hero";
+import { Flex } from "@chakra-ui/react";
 import { JobsList } from "../../components/JobsList";
 import Navbar from "../../components/Navbar";
 
@@ -17,7 +14,6 @@ const JobsLayout: React.FC<LayoutProps> = ({ children }) => {
     <Flex>
       <JobsList />
       {children}
-      <DarkModeSwitch />
     </Flex>
     </Flex>
   );
@@ -32,4 +28,4 @@ const Jobs = () => {
 
 
 export default Jobs;
-export {JobsLayout}
+export { JobsLayout };

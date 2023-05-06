@@ -1,17 +1,70 @@
-import { useContactCandidate, CandidateReferrer } from "../hooks/useCandidate";
-import { Box, Button, Code, Flex, Spinner, Text, VStack } from "@chakra-ui/react";
-import React from "react";
+import {
+  Box,
+  Button,
+  Code,
+  Flex,
+  Input,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { API_URL } from "../constants";
+import { CandidateReferrer, useContactCandidate } from "../hooks/useCandidate";
+import { ChapterCandidate } from "../types";
 
-interface ContactCandidateProps {
-  linkedinId: string;
+interface ReachableCandidateProps {
+  candidate: ChapterCandidate;
 }
 
-const ReachableCandidate = () => {
+const ReachableCandidate: React.FC<ReachableCandidateProps> = ({
+  candidate,
+}) => {
+  const [message, setMessage] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    // Generate email with openAI. Very rudimentary
+    const { data } = await axios.post(`${API_URL}/takehome/generate_email/`, {
+      candidate_email: "example@example.com",
+      candidate_name: candidate.name,
+      recruiter_name: "Ryan Chang",
+      company_name: "Chapters Recruiting",
+      position: "Senior Software",
+      feedback,
+    });
+    setMessage(data.message);
+    setLoading(false);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleSendClick = () => {
+    // call a function to send the outreach with the generated message
+  };
+
+  const handleChange = (event) => setFeedback(event.target.value);
+
+  const displayMessage = loading ? "generating message..." : message;
+
   return (
     <Flex direction="column" gap="2">
-        <Text>Candidate is reachable! Here's some generated outreach:</Text>
-        <Code p="4">personalized outreach...</Code>
-        <Button>Send outreach</Button>
+      <Text>Candidate is reachable! Here's some generated outreach:</Text>
+      <Code p="4">{displayMessage}</Code>
+      <Input
+        placeholder="Make the email more personal"
+        onChange={handleChange}
+      />
+      <Flex width="100%" justifyContent="space-between">
+        <Button isLoading={loading} onClick={fetchData}>Re-generate message</Button>
+        <Button isDisabled={loading} colorScheme="green" onClick={handleSendClick}>
+          Send outreach
+        </Button>
+      </Flex>
     </Flex>
   );
 };
@@ -20,11 +73,14 @@ interface ReferrableCandidateProps {
   referrers: CandidateReferrer[];
 }
 
-const ReferrableCandidate = ({ referrers }: ReferrableCandidateProps) => {
+const ReferrableCandidate: React.FC<ReferrableCandidateProps> = ({
+  referrers,
+}) => {
   return (
     <VStack align="flex-start" spacing={4}>
       <Text>
-        Candidate is not directly reachable, here are some potential referrers.
+        Candidate is not directly reachable, here are some potential referrers
+        and their closeness.
       </Text>
       <Text fontWeight="bold">Referrers:</Text>
       {referrers.map((referrer: CandidateReferrer) => (
@@ -49,11 +105,16 @@ const ReferrableCandidate = ({ referrers }: ReferrableCandidateProps) => {
   );
 };
 
+interface ContactCandidateProps {
+  candidate: ChapterCandidate;
+}
+
 export const CandidateInfo: React.FC<ContactCandidateProps> = ({
-  linkedinId,
+  candidate,
 }) => {
-  const { referrers, isLoading, isError, reachable } =
-    useContactCandidate(linkedinId);
+  const { referrers, isLoading, isError, reachable } = useContactCandidate(
+    candidate.id
+  );
 
   if (isLoading) {
     return <Spinner />;
@@ -63,13 +124,8 @@ export const CandidateInfo: React.FC<ContactCandidateProps> = ({
     return <Text>Error fetching referrers</Text>;
   }
 
-  if (reachable) {
-    return <ReachableCandidate />;
-  } else {
-  }
-
   return reachable ? (
-    <ReachableCandidate />
+    <ReachableCandidate candidate={candidate} />
   ) : (
     <ReferrableCandidate referrers={referrers} />
   );
