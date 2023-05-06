@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Flex,
+  Heading,
   Spinner,
   Text,
   Wrap,
@@ -30,8 +31,8 @@ const JobsCandidatesContent: React.FC = () => {
   );
 
   return (
-    <Flex direction={"column"} w={"100%"} marginRight={"10vw"}>
-      <Text>Candidates</Text>
+    <Flex direction={"column"} w={"100%"} marginRight={"10vw"} p={4}>
+      <Heading fontSize="2vw">Candidates</Heading>
       <Flex direction={"column"} w={"100%"} gap="2">
         {sortedCandidates.map((candidate) => (
           <CandidateItem candidate={candidate} />

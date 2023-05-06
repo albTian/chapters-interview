@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   Center,
+  Flex,
+  Heading,
   HStack,
   List,
   ListItem,
@@ -66,8 +68,9 @@ const JobsList: React.FC = () => {
   console.log(jobId)
 
   return (
-    <VStack align={"left"} justifyContent={"left"} spacing={2} px={4}>
-      <Text>Jobs</Text>
+    <Flex direction="column" align={"left"} justifyContent={"left"} gap={2} p={4}>
+      {/* <Text>Jobs</Text> */}
+      <Heading fontSize="2vw">Jobs</Heading>
       {jobs.map((job) => (
         <JobButton
           key={job.id}
@@ -76,7 +79,7 @@ const JobsList: React.FC = () => {
           onClick={() => handleJobClick(job)}
         />
       ))}
-    </VStack>
+    </Flex>
   );
 };
 
