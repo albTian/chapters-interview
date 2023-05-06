@@ -7,12 +7,44 @@ import {
   ListItem,
   Spinner,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { useJobs } from "../hooks/useJobs";
 import Link from "next/link";
+import { ChapterJob } from "../types";
+import { useState } from "react";
+import { useRouter } from "next/router";
+
+
+interface JobButtonProps {
+  job: ChapterJob;
+  selected: boolean;
+  onClick: () => void;
+}
+
+const JobButton: React.FC<JobButtonProps> = ({ job, selected, onClick }) => {
+  return (
+    <Button
+      justifyContent="flex-start"
+      variant={selected ? "solid" : "ghost"}
+      colorScheme={selected ? "blue" : undefined}
+      onClick={onClick}
+    >
+      {job.position}
+    </Button>
+  );
+};
 
 const JobsList: React.FC = () => {
   const { jobs, isLoading, isError } = useJobs();
+  const router = useRouter();
+
+  // Parse the job ID from the route parameters
+  const jobId = router.query.id?.toString() ?? "";
+
+  const handleJobClick = (job: ChapterJob) => {
+    router.push(`/jobs/${job.id}`);
+  };
 
   if (isLoading) {
     return (
@@ -30,40 +62,20 @@ const JobsList: React.FC = () => {
     );
   }
 
+  console.log(jobId)
+
   return (
-    <Box>
-      <List spacing={3}>
-        {jobs.map((job) => (
-          <ListItem key={job.id}>
-            <Link href={`/jobs/${job.id}`}>
-              <HStack
-                spacing={3}
-                alignItems="center"
-                justifyContent="space-between"
-                border="1px"
-                borderColor="gray.200"
-                borderRadius="md"
-                p={3}
-              >
-                <Text fontSize="xl" fontWeight="bold">
-                  {job.position}
-                </Text>
-                <Button
-                  as="a"
-                  href={job.job_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  size="sm"
-                  variant="outline"
-                >
-                  Apply
-                </Button>
-              </HStack>
-            </Link>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+    <VStack align={"left"} justifyContent={"left"} spacing={2} px={4}>
+      <Text>Jobs</Text>
+      {jobs.map((job) => (
+        <JobButton
+          key={job.id}
+          job={job}
+          selected={jobId === job.id.toString()}
+          onClick={() => handleJobClick(job)}
+        />
+      ))}
+    </VStack>
   );
 };
 

@@ -8,8 +8,6 @@ const Index = () => {
   return (
     <Container pb={"10vh"}>
       <Hero title={"Home"}/>
-
-
       <DarkModeSwitch />
     </Container>
   );
