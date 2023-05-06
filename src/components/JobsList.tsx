@@ -99,12 +99,6 @@ const JobsList: React.FC = () => {
     });
   };
 
-  const handleAddJob = () => {
-    setAddingJob(true)
-    mutate()
-    setAddingJob(false)
-  }
-
   return (
     <Flex>
       <Flex
@@ -123,8 +117,7 @@ const JobsList: React.FC = () => {
             onClick={() => handleJobClick(job)}
           />
         ))}
-        {addingJob && <div>adding job...</div>}
-        <AddJobButton handleAddJob={handleAddJob} />
+        <AddJobButton handleAddJob={mutate} />
       </Flex>
       <div
         onMouseDown={handleMouseDown}

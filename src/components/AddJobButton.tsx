@@ -17,10 +17,10 @@ import axios from "axios";
 import { API_URL } from "../constants";
 
 interface AddJobButtonProps {
-  handleAddJob: () => void
+  handleAddJob: () => void;
 }
 
-export default function AddJobButton({handleAddJob}: AddJobButtonProps) {
+export default function AddJobButton({ handleAddJob }: AddJobButtonProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [position, setPosition] = useState("");
   const [jobUrl, setJobUrl] = useState("");
@@ -33,8 +33,8 @@ export default function AddJobButton({handleAddJob}: AddJobButtonProps) {
       job_url: jobUrl,
       description,
     };
-    console.log("submitting jobs")
-    console.log(newJob)
+    console.log("submitting jobs");
+    console.log(newJob);
     try {
       const response = await axios.post(`${API_URL}/takehome/jobs`, [newJob]);
       console.log(response);
@@ -42,7 +42,7 @@ export default function AddJobButton({handleAddJob}: AddJobButtonProps) {
       console.error(error);
     }
     onClose();
-    handleAddJob()
+    handleAddJob();   // Refreshes SWR to re-fetch the jobs data immediately
   };
 
   return (
