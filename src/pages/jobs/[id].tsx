@@ -1,23 +1,20 @@
 import {
-  Avatar,
-  Box,
   Flex,
   Heading,
   Spinner,
-  Text,
-  Wrap,
-  WrapItem,
+  Text
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { JobsLayout } from ".";
 import CandidateItem from "../../components/Candidate";
 import { useCandidatesForJob } from "../../hooks/useJobs";
 
+// TODO: Could optimize this to use SSR and inital props
 const JobsCandidatesContent: React.FC = () => {
   const router = useRouter();
-  const jobId = router.query.id?.toString() || "";
+  const jobId = router.query.id?.toString() || "-1";
   const { candidates, isLoading, isError } = useCandidatesForJob(jobId);
-
+  
   if (isLoading) {
     return <Spinner />;
   }
@@ -26,27 +23,25 @@ const JobsCandidatesContent: React.FC = () => {
     return <Text>Error fetching candidate data</Text>;
   }
 
-  const sortedCandidates = candidates.sort(
-    (a, b) => b.fit_score - a.fit_score
-  );
 
   return (
-    <Flex direction={"column"} w={"100%"} marginRight={"10vw"} p={4}>
-      <Heading fontSize="2vw">Candidates</Heading>
-      <Flex direction={"column"} w={"100%"} gap="2">
-        {sortedCandidates.map((candidate) => (
+    <Flex direction={"column"} p={4} gap="2">
+        {candidates.map((candidate) => (
           <CandidateItem candidate={candidate} />
         ))}
-      </Flex>
     </Flex>
   );
 };
+
 
 // To handle sidebar and dark mode switch
 const JobCandidatesPage: React.FC = () => {
   return (
     <JobsLayout>
-      <JobsCandidatesContent />
+      <Flex direction="column" width="100%" marginRight={"10vw"} py="4">
+        <Heading fontSize="2vw">Candidates</Heading>
+        <JobsCandidatesContent />
+      </Flex>
     </JobsLayout>
   );
 };
