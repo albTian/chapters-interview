@@ -28,7 +28,7 @@ const JobsCandidatesContent: React.FC = () => {
   }
 
   return (
-    <Flex direction={"column"} p="4" gap="2">
+    <Flex direction={"column"} gap="2" py="2">
       {candidates.map((candidate) => (
         <CandidateItem candidate={candidate} />
       ))}

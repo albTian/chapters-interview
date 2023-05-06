@@ -1,14 +1,13 @@
 import { Box, Avatar, Text, BoxProps, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { ChapterCandidate } from "../types";
+import { CandidateInfo } from "./CandidateInfo";
 
 interface CandidateItemProps extends BoxProps {
   candidate: ChapterCandidate;
 }
 
 const CandidateItem = ({ candidate, ...props }: CandidateItemProps) => {
-  console.log("candidate")
-  console.log(candidate)
   const [isExpanded, setIsExpanded] = useState(false);
 
   const fitScore = Math.round(candidate.fit_score * 100);
@@ -43,12 +42,7 @@ const CandidateItem = ({ candidate, ...props }: CandidateItemProps) => {
         </Box>
       </Button>
         {isExpanded && (
-          <Box mt="4">
-            <Text fontWeight="bold">Candidate Info:</Text>
-            <Text>{`ID: ${candidate.id}`}</Text>
-            <Text>{`Fit Score: ${candidate.fit_score}`}</Text>
-            <Text>{`Profile Image: ${candidate.profile_image}`}</Text>
-          </Box>
+          <CandidateInfo linkedinId={candidate.id} />
         )}
     </Box>
   );
