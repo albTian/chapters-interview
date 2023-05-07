@@ -11,9 +11,16 @@ import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import white_logo from "../assets/white_logo.svg";
 import black_logo from "../assets/black_logo.svg";
 import Image from "next/image";
+import { useRouter } from 'next/router';
+
+
 
 const TopNavbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/');
+  }
 
   return (
     <Flex
@@ -25,7 +32,7 @@ const TopNavbar = () => {
       p={1}
       borderBottom={"1px solid rgba(211, 211, 211, 0.5)"}
     >
-      <Box marginLeft={"4"}>
+      <Box marginLeft={"4"} onClick={handleClick} cursor="pointer">
         <Image src={colorMode === "dark" ? white_logo : black_logo} alt="Logo" height={24} />
       </Box>
       <IconButton

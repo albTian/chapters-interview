@@ -3,9 +3,10 @@ import {
   Button,
   Center,
   Flex,
-  Heading, Spinner,
+  Heading,
+  Spinner,
   Text,
-  useColorMode
+  useColorMode,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -20,8 +21,12 @@ interface JobButtonProps {
 }
 
 const JobButton: React.FC<JobButtonProps> = ({ job, selected, onClick }) => {
-  const { colorMode } = useColorMode()
-  const textColor = !selected ? ""  : (colorMode === "dark" ? "green.300" : "green")
+  const { colorMode } = useColorMode();
+  const textColor = !selected
+    ? ""
+    : colorMode === "dark"
+    ? "green.300"
+    : "green";
   return (
     <Button
       justifyContent="flex-start"
@@ -44,13 +49,12 @@ const JobButton: React.FC<JobButtonProps> = ({ job, selected, onClick }) => {
 const JobsList: React.FC = () => {
   const { jobs, isLoading, isError, mutate } = useJobs();
   const router = useRouter();
-  const [addingJob, setAddingJob] = useState(false)
+  const [addingJob, setAddingJob] = useState(false);
   // --- Resizing ---
   const MIN_WIDTH = 0.2; // minimum width in percentage of screen width
   const MAX_WIDTH = 0.5; // maximum width in percentage of screen width
 
   const [sidebarWidth, setSidebarWidth] = useState(0.2);
-  const [resizing, setResizing] = useState(false);
 
   // Parse the job ID from the route parameters
   const jobId = router.query.id?.toString() ?? "";
@@ -61,9 +65,12 @@ const JobsList: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Center height="100vh">
-        <Spinner size="xl" />
-      </Center>
+      <Box height="100vh">
+        <Flex p="4">
+          <Spinner size="xl" />
+          <Text>Loading jobs...</Text>
+        </Flex>
+      </Box>
     );
   }
 
@@ -76,7 +83,6 @@ const JobsList: React.FC = () => {
   }
 
   const handleResize = (e: MouseEvent) => {
-    setResizing(true);
     // subtract from 1 to get direction correct
     const newWidth = e.clientX / window.innerWidth;
     const sidebarPixelWidth = Math.min(
@@ -91,7 +97,6 @@ const JobsList: React.FC = () => {
     document.addEventListener("mousemove", handleResize);
     document.addEventListener("mouseup", () => {
       document.removeEventListener("mousemove", handleResize);
-      setResizing(false);
     });
   };
 
@@ -122,7 +127,7 @@ const JobsList: React.FC = () => {
           overflow: "hidden",
           cursor: "col-resize",
           borderRight: "1px solid rgba(211, 211, 211, 0.5)",
-          minHeight: "100vh"
+          minHeight: "100vh",
         }}
       />
     </Flex>
