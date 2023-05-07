@@ -12,7 +12,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { API_URL } from "../constants";
 import { CandidateReferrer, useContactCandidate } from "../hooks/useCandidate";
+import { useJob } from "../hooks/useJobs";
 import { ChapterCandidate } from "../types";
+import { useRouter } from "next/router";
 
 interface ReachableCandidateProps {
   candidate: ChapterCandidate;
@@ -24,6 +26,12 @@ const ReachableCandidate: React.FC<ReachableCandidateProps> = ({
   const [message, setMessage] = useState("");
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+
+
+  const router = useRouter();
+  const jobId = router.query.id?.toString() || "1";
+  const { job } = useJob(jobId)   // swr handles refetching smartly so calling the hook in different places is fine
 
   const fetchData = async () => {
     setLoading(true);
@@ -33,11 +41,12 @@ const ReachableCandidate: React.FC<ReachableCandidateProps> = ({
       candidate_name: candidate.name,
       recruiter_name: "Ryan Chang",
       company_name: "Chapters Recruiting",
-      position: "Senior Software",
+      position: job ? job.position : "",
       feedback,
     });
     setMessage(data.message);
     setLoading(false);
+    setSent(false)
   };
   useEffect(() => {
     fetchData();
@@ -45,6 +54,7 @@ const ReachableCandidate: React.FC<ReachableCandidateProps> = ({
 
   const handleSendClick = () => {
     // call a function to send the outreach with the generated message
+    setSent(true)
   };
 
   const handleChange = (event) => setFeedback(event.target.value);
@@ -61,8 +71,8 @@ const ReachableCandidate: React.FC<ReachableCandidateProps> = ({
       />
       <Flex width="100%" justifyContent="space-between">
         <Button isLoading={loading} onClick={fetchData}>Re-generate message</Button>
-        <Button isDisabled={loading} colorScheme="green" onClick={handleSendClick}>
-          Send outreach
+        <Button isDisabled={loading || sent} colorScheme="green" onClick={handleSendClick}>
+          {sent ? "Sent!" : "Send outreach"}
         </Button>
       </Flex>
     </Flex>
